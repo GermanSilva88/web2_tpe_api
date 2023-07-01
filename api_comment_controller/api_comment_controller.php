@@ -23,7 +23,7 @@ abstract class api_comment_controller
         return json_decode($this->data);
     }
 
-    function get($params = [])
+    function get_com($params = [])
     {
         if (empty($params)) {
             //get comments from model
@@ -49,11 +49,6 @@ abstract class api_comment_controller
         $new_comment = $this->model->save_comment($comment, $score);
     }
 
-    public function get_comment($id)
-    {
-        //get comment from model by ID
-    }
-
     public function delete_comment($params = [])
     {
         //delete comments from model by ID
@@ -64,5 +59,19 @@ abstract class api_comment_controller
             $this->view->response("Comment id=$comment_id eliminada con éxito", 200);
         } else
             $this->view->response("Comment id=$comment_id not found", 404);
+    }
+
+    public function update_com($params = [])
+    {
+        $comment_id = $params[':ID'];
+        $comment = $this->model->get_comment($comment_id);
+        if (!empty($comment)) {
+            $body = $this->getData();
+            $comment = $body->comment_game;
+            $score = $body->score_game;
+            $comment = $this->model->update_comment($comment, $score);
+            $this->view->response("Tarea id=$comment_id actualizada con éxito", 200);
+        } else
+            $this->view->response("Task id=$comment_id not found", 404);
     }
 }
