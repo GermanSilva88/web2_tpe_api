@@ -39,11 +39,6 @@ abstract class api_comment_controller
         }
     }
 
-    public function add_comment()
-    {
-        //get comments from model
-    }
-
     public function add_comment($params = [])
     {
         // devuelve el objeto JSON enviado por POST
