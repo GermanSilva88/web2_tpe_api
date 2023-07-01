@@ -37,10 +37,10 @@ class api_comment_model
         $query->execute(array($comment_id));
     }
 
-    public function update_comment($comment_id, $comment, $score)
+    public function update_comment($comment_id, $comment, $score)   // VER QUE PARAMETROS SE PASAN
     {
-        $query = $this->db->prepare('UPDATE comment SET name_game = ?, description_game = ?, genre_id = ? WHERE id_game = ?');
-        $query->execute(array($name_game, $description_game,$id_genre, $id));
+        $query = $this->db->prepare('UPDATE comment SET comment_game = ?, score_game = ?, game_id = ? WHERE id = ?');
+        $query->execute(array(   ));
     }
 
 
