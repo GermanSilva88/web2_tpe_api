@@ -47,7 +47,7 @@ abstract class api_comment_controller
         // inserta el comentario
         $comment = $body->comment_game;
         $score = $body->score_game;
-        $id_game = $body->score_game;
+        $id_game = $body->game_id; // PREGUNTAR EN TUTORÍA
         $new_comment = $this->model->add_comment($comment, $score, $id_game);
     }
 
@@ -71,7 +71,8 @@ abstract class api_comment_controller
             $body = $this->getData();
             $comment = $body->comment_game;
             $score = $body->score_game;
-            $comment = $this->model->update_comment($comment, $score);
+            $id_game = $body->game_id;
+            $comment = $this->model->update_comment($comment, $score, $id_game);
             $this->view->response("Tarea id=$comment_id actualizada con éxito", 200);
         } else
             $this->view->response("Task id=$comment_id not found", 404);
