@@ -1,0 +1,183 @@
+.container_body {
+  display: flex;
+  align-items: center;
+}
+
+.img_home {
+  width: 750px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: flex-end;
+  list-style-type: none;
+  background-color: #333;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar li {
+  display: inline-block;
+}
+
+.navbar li a {
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px;
+  font-size: 40px;
+}
+
+.navbar li a:hover {
+  background-color: #555;
+}
+
+.footer {
+  background-color: #333;
+  color: #fff;
+  padding: 20px 0;
+}
+
+.container_footer {
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.footer p {
+  margin: 0;
+}
+
+.table_genre {
+  background-color: #f2f2f2;
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.table_genre th,
+.table_genre td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-bottom: none;
+}
+
+.table_genre th {
+  background-color: #555;
+  color: white;
+}
+
+.table_genre tr:hover {
+  background-color: #e0e0e0;
+}
+
+.table_genre tr:first-child th {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.table_genre tr:last-child td {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.table_genre td:first-child,
+.table_genre th:first-child {
+  border-left: none;
+}
+
+.table_genre td:last-child,
+.table_genre th:last-child {
+  border-right: none;
+}
+
+.table_genre tr:not(:last-child) td {
+  border-bottom: 1px solid #ddd;
+}
+
+
+h1 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.game-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.game-description {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.game-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.game-table th,
+.game-table td {
+  padding: 10px;
+  border: 1px solid #dee2e6;
+}
+
+.game-name {
+  font-weight: bold;
+  color: #007bff;
+}
+
+.game-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: #007bff;
+  height: 100%;
+}
+
+.update-form {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.update-form label {
+  font-weight: bold;
+}
+
+.update-form input[type="text"],
+.update-form textarea {
+  width: 110%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.update-form textarea {
+  width: 110%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 300px;
+}
+
+.update-form input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.update-form input[type="submit"]:hover {
+  background-color: #45a049;
+}
