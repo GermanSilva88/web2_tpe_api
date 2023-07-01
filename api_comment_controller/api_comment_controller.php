@@ -30,7 +30,8 @@ abstract class api_comment_controller
             $comments = $this->model->get_comments();
             return $this->view->response($comments, 200);
         } else {
-            $comment = $this->model->get_comment($params[":ID"]);
+            $comment_id=$params[":ID"];
+            $comment = $this->model->get_comment($comment_id);
             if (!empty($comment)) {
                 return $this->view->response($comment, 200);
             } else {
@@ -39,14 +40,15 @@ abstract class api_comment_controller
         }
     }
 
-    public function add_comment($params = [])
+    public function add_com($params = [])
     {
         // devuelve el objeto JSON enviado por POST
         $body = $this->getData();
         // inserta el comentario
         $comment = $body->comment_game;
         $score = $body->score_game;
-        $new_comment = $this->model->save_comment($comment, $score);
+        $id_game = $body->score_game;
+        $new_comment = $this->model->add_comment($comment, $score, $id_game);
     }
 
     public function delete_comment($params = [])

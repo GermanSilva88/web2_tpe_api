@@ -3,12 +3,7 @@
 class api_comment_model
 {
 
-    private $db;
 
-    function __construct()
-    {
-        $this->db = new PDO('mysql:host=localhost;' . 'dbname=db_esports;charset=utf8', 'root', '');
-    }
 
     public function get_comments()
     {
@@ -39,4 +34,13 @@ class api_comment_model
 
     }
 
+
+
+
+
+
+
+    public function get_comments(){
+
+}
 }
