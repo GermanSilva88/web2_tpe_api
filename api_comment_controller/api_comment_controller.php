@@ -30,8 +30,8 @@ class api_comment_controller
             $comments = $this->get_com_by_order($_REQUEST['sort']);
         else if (isset($_REQUEST['filter']))
             $comments = $this->get_com_by_filter($_REQUEST['filter']);
-        // else if(isset($_REQUEST['pagina']) && isset($_REQUEST['filas']))
-        //     $jugadores=$this->paginar($_REQUEST['pagina'],$_REQUEST['filas']);
+        else if(isset($_REQUEST['page']) && isset($_REQUEST['records']))
+            $comments=$this->get_com_by_page($_REQUEST['page'],$_REQUEST['records']);
         // else
         //     $comments = $this->model->get_comments();
         /*--En cualquiera de los casos muestra la vista adecuada--*/
@@ -129,6 +129,21 @@ class api_comment_controller
             }
         }
     }
+
+    public function get_com_by_page($page, $records){
+        if ((!empty($page)) && (!empty($records)) && ($page>0) && ($records>0) && (is_numeric($page)) && (is_numeric($records))){
+            $total_records = $this->model->total_records();
+            if($page <= $total_records/$records){
+                $from=($records*($page-1));
+                return $this->model->obtener_comments_byPage($from, $records); 
+            }
+            else
+                return $this->view->response("la pagina pedida con esa cantidad de filas no contiene elementos", 404);
+        }
+        return $this->view->response("Parametros incorrectos", 404);
+    }
+    
+ 
     
     public function verificar_atributos($atributo)
     {

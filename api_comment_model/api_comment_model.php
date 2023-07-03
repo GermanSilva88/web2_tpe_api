@@ -61,8 +61,10 @@ class api_comment_model
     // }
 
     public function obtener_comments_byOrder($sort, $order)
-    {
-        $sentencia = $this->db->prepare("SELECT * FROM comment ORDER BY $sort $order");
+    {   //obtiene los comentarios ordenados
+        $sentencia = $this->db->prepare("SELECT game.name_game, comment.comment_game, comment.score_game 
+        FROM comment
+        JOIN game ON comment.game_id = game.id_game ORDER BY $sort $order");
         $sentencia->execute();
         return $sentencia->fetchAll(PDO::FETCH_OBJ);
     }
@@ -75,9 +77,28 @@ class api_comment_model
     // }
 
     public function obtener_comments_byFilter($filter, $dato)
-    {
-        $sentencia = $this->db->prepare("SELECT * FROM comment WHERE $filter = ?");
+    {   //obtiene los comentarios filtrados
+        $sentencia = $this->db->prepare("SELECT game.name_game, comment.comment_game, comment.score_game 
+        FROM comment
+        JOIN game ON comment.game_id = game.id_game
+        WHERE $filter = ?");
         $sentencia->execute(array($dato));
         return $sentencia->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function obtener_comments_byPage($from, $records)
+    {   //obtiene los comentarios paginados
+        $sentencia = $this->db->prepare("SELECT game.name_game, comment.comment_game, comment.score_game 
+        FROM comment
+        JOIN game ON comment.game_id = game.id_game LIMIT $from, $records");
+        $sentencia->execute();
+        return $sentencia->fetchAll(PDO::FETCH_OBJ);
+    }
+    
+    public function total_records()
+    {   //cuenta la cantidad total de comentarios que hay en la DDBB
+        $sentencia = $this->db->prepare("SELECT count(*) FROM comment");
+        $sentencia->execute();
+        return $sentencia->fetchColumn(); 
     }
 }
