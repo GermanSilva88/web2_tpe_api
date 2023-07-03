@@ -21,33 +21,30 @@ class api_comment_controller
 
     public function getData()
     {
-        return json_decode($this->data);
+        return json_decode($this->data); //transforma texto crudo a JSON
     }
 
-    public function obtener_com()
-    {
+    public function get_coms()
+    {   //evalua distintas maneras de obtener los comentarios
         if (isset($_REQUEST['sort']))
             $comments = $this->get_com_by_order($_REQUEST['sort']);
         else if (isset($_REQUEST['filter']))
             $comments = $this->get_com_by_filter($_REQUEST['filter']);
-        else if(isset($_REQUEST['page']) && isset($_REQUEST['records']))
-            $comments=$this->get_com_by_page($_REQUEST['page'],$_REQUEST['records']);
-        // else
-        //     $comments = $this->model->get_comments();
-        /*--En cualquiera de los casos muestra la vista adecuada--*/
-        if ($comments != null)
-            return $this->view->response($comments, 200);
+        else if (isset($_REQUEST['page']) && isset($_REQUEST['records']))
+            $comments = $this->get_com_by_page($_REQUEST['page'], $_REQUEST['records']);
         else
+            $comments = $this->obtener_coms();
+
+        if ($comments != null) {  //una vez obtenidos los comentarios, los muestra
+            return $this->view->response($comments, 200);
+        } else {
             return $this->view->response("No se encontraron comentarios", 404);
+        }
     }
 
     public function get_com($params = [])
     {
-        if (empty($params)) {
-            //get comments from model
-            $comments = $this->model->get_comments();
-            return $this->view->response($comments, 200);
-        } else {
+        if ((isset($params) && ($params[":ID"] > 0))) {
             $comment_id = $params[":ID"];
             $comment = $this->model->get_comment($comment_id);
             if (!empty($comment)) {
@@ -58,12 +55,18 @@ class api_comment_controller
         }
     }
 
-    public function add_com($params = [])
+    public function obtener_coms()
     {
+        $comments = $this->model->get_comments();
+        return $this->view->response($comments, 200);
+    }
 
-        // devuelve el objeto JSON enviado por POST
+
+
+    public function add_com($params = [])
+    {   // getData devuelve el objeto JSON enviado por POST
         $body = $this->getData();
-        // inserta el comentario
+        // desglosa el comentario que viene en el body en las 3 variables
         $comment = $body->comment_game;
         $score = $body->score_game;
         $id_game = $body->game_id;
@@ -73,8 +76,7 @@ class api_comment_controller
     }
 
     public function delete_com($params = [])
-    {
-        //delete comments from model by ID
+    {   //elimina comentarios por ID
         $comment_id = $params[':ID'];
         $comment = $this->model->get_comment($comment_id);
         if (!empty($comment)) {
@@ -85,7 +87,7 @@ class api_comment_controller
     }
 
     public function update_com($params = [])
-    {
+    {   //modifica comentarios por ID
         $comment_id = $params[':ID'];
         $comment = $this->model->get_comment($comment_id);
         if (!empty($comment)) {
@@ -104,10 +106,8 @@ class api_comment_controller
         if ($this->verificar_atributos($sort)) {
             if (isset($_REQUEST['order']) && !empty($_REQUEST['order'])) {
                 $order = $_REQUEST['order'];
-                // $sql = "SELECT * FROM comment ORDER BY $sort $order";
             } else {
                 $order = 'ASC';
-                // $sql = "SELECT * FROM comment ORDER BY $sort"; //lo llamaria ascendentemente por defecto   
             }
             return $this->model->obtener_comments_byOrder($sort, $order);
         } else
@@ -115,40 +115,34 @@ class api_comment_controller
     }
 
 
-    // $comment_ord=$this->model->get_comment_by_order($sort, $order);
-    // return $this->view->response($comment_ord, 200);
-    //}
+
     public function get_com_by_filter($filter)
     {
         if ($this->verificar_atributos($filter)) {
             if (isset($_REQUEST['dato'])) {
-                // $sql = "SELECT * FROM comment WHERE $filter = :dato";
+
                 $dato = $_REQUEST['dato'];
                 return $this->model->obtener_comments_byFilter($filter, $dato);
-                // return $this->model->obtener_comments_byFilter($sql, $_REQUEST['dato']);
             }
         }
     }
 
-    public function get_com_by_page($page, $records){
-        if ((!empty($page)) && (!empty($records)) && ($page>0) && ($records>0) && (is_numeric($page)) && (is_numeric($records))){
+    public function get_com_by_page($page, $records)
+    {
+        if ((!empty($page)) && (!empty($records)) && ($page > 0) && ($records > 0) && (is_numeric($page)) && (is_numeric($records))) {
             $total_records = $this->model->total_records();
-            if($page <= $total_records/$records){
-                $from=($records*($page-1));
-                return $this->model->obtener_comments_byPage($from, $records); 
-            }
-            else
+            if ($page <= $total_records / $records) {
+                $from = ($records * ($page - 1));
+                return $this->model->obtener_comments_byPage($from, $records);
+            } else
                 return $this->view->response("la pagina pedida con esa cantidad de filas no contiene elementos", 404);
         }
         return $this->view->response("Parametros incorrectos", 404);
     }
-    
- 
-    
+
     public function verificar_atributos($atributo)
-    {
+    {   //verifica que los valores de $sort y $filter sean validos
         $validSortOptions = ['name_game', 'comment_game', 'score_game'];
-        //$validOrderOptions = ['ASC', 'DESC'];
         return (in_array($atributo, $validSortOptions));
     }
 }
