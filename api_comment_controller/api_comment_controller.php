@@ -24,6 +24,23 @@ class api_comment_controller
         return json_decode($this->data);
     }
 
+    public function obtener_com()
+    {
+        if (isset($_REQUEST['sort']))
+            $comments = $this->get_com_by_order($_REQUEST['sort']);
+        else if (isset($_REQUEST['filter']))
+            $comments = $this->get_com_by_filter($_REQUEST['filter']);
+        // else if(isset($_REQUEST['pagina']) && isset($_REQUEST['filas']))
+        //     $jugadores=$this->paginar($_REQUEST['pagina'],$_REQUEST['filas']);
+        // else
+        //     $comments = $this->model->get_comments();
+        /*--En cualquiera de los casos muestra la vista adecuada--*/
+        if ($comments != null)
+            return $this->view->response($comments, 200);
+        else
+            return $this->view->response("No se encontraron comentarios", 404);
+    }
+
     public function get_com($params = [])
     {
         if (empty($params)) {
@@ -82,18 +99,41 @@ class api_comment_controller
             $this->view->response("Comment id=$comment_id No se encontro", 404);
     }
 
-    public function get_com_by_order($params = null)
+    public function get_com_by_order($sort)
     {
-        $sort = $_REQUEST['sort'];
-        $order = $_REQUEST['order'];
-        $validSortOptions = ['name_game', 'comment_game', 'score_game'];
-        $validOrderOptions = ['ASC', 'DESC'];
-        if (!in_array($sort, $validSortOptions) || !in_array($order, $validOrderOptions)) {
-            // Manejar el error o establecer valores predeterminados
-            $sort = 'score_game';
-            $order = 'ASC';
+        if ($this->verificar_atributos($sort)) {
+            if (isset($_REQUEST['order']) && !empty($_REQUEST['order'])) {
+                $order = $_REQUEST['order'];
+                // $sql = "SELECT * FROM comment ORDER BY $sort $order";
+            } else {
+                $order = 'ASC';
+                // $sql = "SELECT * FROM comment ORDER BY $sort"; //lo llamaria ascendentemente por defecto   
+            }
+            return $this->model->obtener_comments_byOrder($sort, $order);
+        } else
+            return $this->view->response("Verificar la columna/atributo de la tabla elegida como criterio", 404);
+    }
+
+
+    // $comment_ord=$this->model->get_comment_by_order($sort, $order);
+    // return $this->view->response($comment_ord, 200);
+    //}
+    public function get_com_by_filter($filter)
+    {
+        if ($this->verificar_atributos($filter)) {
+            if (isset($_REQUEST['dato'])) {
+                // $sql = "SELECT * FROM comment WHERE $filter = :dato";
+                $dato = $_REQUEST['dato'];
+                return $this->model->obtener_comments_byFilter($filter, $dato);
+                // return $this->model->obtener_comments_byFilter($sql, $_REQUEST['dato']);
+            }
         }
-        $comment_ord=$this->model->get_comment_by_order($sort, $order);
-        return $this->view->response($comment_ord, 200);
+    }
+    
+    public function verificar_atributos($atributo)
+    {
+        $validSortOptions = ['name_game', 'comment_game', 'score_game'];
+        //$validOrderOptions = ['ASC', 'DESC'];
+        return (in_array($atributo, $validSortOptions));
     }
 }

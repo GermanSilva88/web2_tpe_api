@@ -47,16 +47,37 @@ class api_comment_model
         $query->execute(array($comment, $score, $id_game, $comment_id));
     }
 
-    public function get_comment_by_order($sort, $order)
+    // public function get_comment_by_order($sort, $order)
+    // {
+    //     $query = $this->db->prepare('SELECT game.name_game, comment.comment_game, comment.score_game 
+    //     FROM game 
+    //     JOIN comment ON game.id_game = comment.game_id 
+    //     ORDER BY ' . $sort . ' ' . $order);
+    //     //  $query->bindParam(':sort', $sort);
+    //     //  $query->bindParam(':order', $order);
+    //      $query->execute();
+    //     $comments = $query->fetchAll(PDO::FETCH_OBJ);
+    //     return $comments;
+    // }
+
+    public function obtener_comments_byOrder($sort, $order)
     {
-        $query = $this->db->prepare('SELECT game.name_game, comment.comment_game, comment.score_game 
-        FROM game 
-        JOIN comment ON game.id_game = comment.game_id 
-        ORDER BY ' . $sort . ' ' . $order);
-        //  $query->bindParam(':sort', $sort);
-        //  $query->bindParam(':order', $order);
-         $query->execute();
-        $comments = $query->fetchAll(PDO::FETCH_OBJ);
-        return $comments;
+        $sentencia = $this->db->prepare("SELECT * FROM comment ORDER BY $sort $order");
+        $sentencia->execute();
+        return $sentencia->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    // public function obtener_comments_byFilter($sql, $dato)
+    // {
+    //     $sentencia = $this->db->prepare($sql);
+    //     $sentencia->execute([':dato' => $dato]);
+    //     return $sentencia->fetchAll(PDO::FETCH_OBJ);
+    // }
+
+    public function obtener_comments_byFilter($filter, $dato)
+    {
+        $sentencia = $this->db->prepare("SELECT * FROM comment WHERE $filter = ?");
+        $sentencia->execute(array($dato));
+        return $sentencia->fetchAll(PDO::FETCH_OBJ);
     }
 }
