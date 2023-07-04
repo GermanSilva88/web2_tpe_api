@@ -5,9 +5,19 @@ La API de Comentarios para Juegos E-Sports proporciona funcionalidades para agre
 
 ## URL base
 La URL base para acceder a la API es: http://localhost/tpe_web2_api/tpe_web2/api
+
+## Tabla de ruteo
+
+| Endpoint                | Método | Controlador             | Acción       |
+|-------------------------|--------|-------------------------|--------------|
+| `/comment`              | GET    | `api_comment_controller` | `get_coms`   |
+| `/comment`              | POST   | `api_comment_controller` | `add_com`    |
+| `/comment/:ID`          | GET    | `api_comment_controller` | `get_com`    |
+| `/comment/:ID`          | DELETE | `api_comment_controller` | `delete_com` |
+| `/comment/:ID`          | PUT    | `api_comment_controller` | `update_com` |
+
 ## Endpoints
 A continuación se detallan los endpoints disponibles en la API de comments:
-
 # 1. Obtener todos los comentarios (ordenados, filtrados, paginados o sin ningun tipo de orden/filtro)
 - Método: GET
 - URL: `/comment`
