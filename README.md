@@ -4,7 +4,7 @@
 La API de Comentarios para Juegos E-Sports proporciona funcionalidades para agregar, eliminar, modificar y obtener comentarios relacionados con juegos de E-Sports. Esta documentación detalla los endpoints disponibles, los parámetros aceptados y los ejemplos de uso.
 
 ## URL base
-La URL base para acceder a la API es: `http://localhost/tpe_web2_api/tpe_web2/api
+La URL base para acceder a la API es: http://localhost/tpe_web2_api/tpe_web2/api
 ## Endpoints
 A continuación se detallan los endpoints disponibles en la API de comments:
 
