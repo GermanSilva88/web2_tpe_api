@@ -24,19 +24,21 @@ class api_comment_controller
 
     public function get_coms()
     {   //evalua distintas maneras de obtener los comentarios
-        if (isset($_REQUEST['sort']))
+        if (isset($_REQUEST['sort'])) {
             $comments = $this->get_com_by_order($_REQUEST['sort']);
-        else if (isset($_REQUEST['filter']))
+        } else if (isset($_REQUEST['filter'])) {
             $comments = $this->get_com_by_filter($_REQUEST['filter']);
-        else if (isset($_REQUEST['page']) && isset($_REQUEST['records']))
+        } else if (isset($_REQUEST['page']) && isset($_REQUEST['records'])) {
             $comments = $this->get_com_by_page($_REQUEST['page'], $_REQUEST['records']);
-        else
-            $comments = $this->obtener_coms();
-        if ($comments != null) {  //una vez obtenidos los comentarios, los muestra
-            return $this->view->response($comments, 200);
         } else {
-            return $this->view->response("No se encontraron comentarios", 404);
+            $comments = $this->obtener_coms();
         }
+            if ($comments != null) {  //una vez obtenidos los comentarios, los muestra
+                return $this->view->response($comments, 200);
+            } else {
+                return $this->view->response("No se encontraron comentarios", 404);
+            }
+        
     }
 
     public function get_com($params = [])
@@ -55,7 +57,8 @@ class api_comment_controller
     public function obtener_coms()
     {   //llamada desde get_coms(), lista todos los comentarios
         $comments = $this->model->get_comments();
-        return $this->view->response($comments, 200);
+        // return $this->view->response($comments, 200);
+        return $comments;
     }
 
     public function add_com()
